@@ -11,21 +11,18 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <android/log.h>
+#include <pthread.h>
 #include "errno.h"
 
 #include "dirent.h"
-
-
+#include "YbsHalHid.h"
 
 #define  TAG    "YbsHid"
 #define LOGI(fmt, args...) __android_log_print(ANDROID_LOG_INFO,  TAG, fmt, ##args)
 #define LOGD(fmt, args...) __android_log_print(ANDROID_LOG_DEBUG, TAG, fmt, ##args)
 #define LOGE(fmt, args...) __android_log_print(ANDROID_LOG_ERROR, TAG, fmt, ##args)
 
-
 int fd=0;
-//#define  DEV_PATH "/dev/hidraw0"
-
 
 char * FindHidName(){
     char *path = "/dev/";
@@ -99,25 +96,14 @@ int inithiddev(){
 }
 
 //描述：read。
-char * readtohid() {
-    int len = 8;
-    const char buflen = 0x08;
-    char buf[8];
-    //LOGI("====开始读取HID信息.\n");
-
-    bzero(buf, buflen);
-    int n = read(fd, buf, buflen);
-
+int readtohid(char *buf,int len) {
+    bzero(buf, len);
+    int n = read(fd, buf, len);
     if(n < 0 ){
         LOGI("====read faile.\n");
-        return  NULL;//return  data
+        return  -1;
     }
-    if(buf[0] != 0x08)
-    {
-        LOGI("====data faile.\n");
-    }
-
-    return  buf;//return  data
+    return  0;
 }
 
 
@@ -139,41 +125,35 @@ char * readtohid() {
         return -1;
     }
 
-    //LOGI("[write to hid]---->return  \n");
+    LOGI("[write to hid]---->return  \n");
     return 0;
 }
 
-#define HID_STATUS 1
+void setVoid(int vol){
+    writetohid(3,vol);
+    //system("echo \"hello\" > /dev/hidraw1");
+}
 
-#define HID_WAKEUP 1
-#define HID_VAD_START 2
-#define HID_VAD_END 3
-#define HID_VAD_TIMEOUT 4
+int getVol(){
+    return 50;
+}
 
 int runYbsHid(){
-    system("su -c \"chmod 777 /dev/hidraw0\"");
+    int ret;
+
+    system("su -c \"chmod 777 /dev/hidraw1\"");
     if(NULL == checkhiddev()){
         LOGD("Can find Hid Device\n");
         return -1;
     }
+    LOGD("checkHid dev success\n");
+    inithiddev();
+    char readbuf[8];
     for(;;){
-        char *hiddata = readtohid();
-        if(hiddata[2] == HID_STATUS){
-            switch (hiddata[3]) {
-                case HID_WAKEUP:
-                    LOGD("HID_WAKEUP\n");
-                    break;
-                case HID_VAD_START:
-                    LOGD("HID_VAD_START\n");
-                    break;
-                case HID_VAD_END:
-                    LOGD("HID_VAD_END\n");
-                    break;
-                case HID_VAD_TIMEOUT:
-                    LOGD("HID_VAD_TIMEOUT\n");
-                    break;
-            }
+        if(0 == readtohid(readbuf,sizeof(readbuf))){
+            LOGD("hid get data %s\n",readbuf);
         }
-        usleep(1000);
+        usleep(10000);
+
     }
 }

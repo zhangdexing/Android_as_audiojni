@@ -7,6 +7,7 @@
 
 #include <sys/stat.h>
 #include "ybsHalAlsa.h"
+#include "YbsHalHid.h"
 
 static const char *TAG="serial_port";
 #define LOGI(fmt, args...) __android_log_print(ANDROID_LOG_INFO,  TAG, fmt, ##args)
@@ -15,10 +16,10 @@ static const char *TAG="serial_port";
 
 
 
-/* Header for class com_ybs_audiojnilib_JNITest */
+/* Header for class Java_com_ybs_audiojnilib_AudioModule */
 
 /*
- * Class:     com_ybs_audiojnilib_JNISend
+ * Class:     Java_com_ybs_audiojnilib_AudioModule
  * Method:    getVersion
  * Signature: ()Ljava/lang/String;
  */
@@ -29,7 +30,7 @@ JNIEXPORT jstring JNICALL Java_com_ybs_audiojnilib_AudioModule_getVersion
 }
 
 /*
- * Class:     com_ybs_audiojnilib_JNISend
+ * Class:     Java_com_ybs_audiojnilib_AudioModule
  * Method:    run
  * Signature: ()I
  */
@@ -42,14 +43,24 @@ JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_run
 
 
 /*
- * Class:     com_ybs_audiojnilib_JNISend
+ * Class:     Java_com_ybs_audiojnilib_AudioModule
  * Method:    SetVol
  * Signature: (I)I
  */
 JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_setVol
         (JNIEnv *env, jobject obj, jint vol){
-
+    setVoid(vol);
     return 1;
+}
+
+/*
+ * Class:     Java_com_ybs_audiojnilib_AudioModule
+ * Method:    SetVol
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_getVol
+        (JNIEnv *env, jobject obj){
+    return getVol();
 }
 
 

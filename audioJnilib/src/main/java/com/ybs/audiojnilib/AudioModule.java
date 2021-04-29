@@ -70,7 +70,6 @@ public class AudioModule {
     public native int setVol(int vol);
 
     //获取音量 0-100
-    public int getVol(){
-        return 0;
-    }
+    public native int getVol();
+
 }

@@ -17,10 +17,16 @@ public class MainActivity extends AppCompatActivity implements AudioInterface {
         setContentView(R.layout.activity_main);
         //应用启动前应给予录音、文件读取、文件写入权限
         mAudioModule  = new AudioModule();
-        mAudioModule.getVersion();
         mAudioModule.setAudioListener(this);
-        mAudioModule.setVol(10);
-        mAudioModule.run();
+       //mAudioModule.run();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mAudioModule.getVersion();
+                mAudioModule.setVol(10);
+            }
+        });
+        thread.start();
     }
 
     @Override
