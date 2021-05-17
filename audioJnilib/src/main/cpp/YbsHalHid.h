@@ -8,6 +8,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+int readtohid(char *buf,int len);
+char * FindHidName();
+int checkhiddev();
+int inithiddev();
+int  writetohid(int type , int value);
+int excpcmsu(void);
+
+
 
 int runYbsHid();
 

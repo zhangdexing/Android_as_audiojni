@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <android/log.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include "errno.h"
 
 #include "dirent.h"
@@ -50,14 +51,14 @@ char * FindHidName(){
     return NULL;
 }
 
- char * checkhiddev(){
+int checkhiddev(){
     char *path = "/dev/";
     //printf("the target path:%s\n",path);
     DIR *dp = opendir(path);
     struct dirent *eq;
-    char buff[20];
+    char buff[100];
     char *name[15];
-    bzero(buff,20);
+    bzero(buff,100);
     //char *output[2]={".",".."};
     int i,j=0;
     for ( i = 1; (eq = readdir(dp)) !=NULL ;  ++i)
@@ -67,14 +68,75 @@ char * FindHidName(){
         if(p1 != NULL )
         {
             name[j]=eq->d_name;
-            //printf("[%d]%s\n",j+1,name[j]);
-            snprintf(buff,20,"/dev/%s",name[j]);
-            j++;
-            return buff;
+//            printf("[%d]%s\n",j+1,name[j]);
+            snprintf(buff,100,"su -c \"chmod 777 /dev/%s\"",name[j]);
+            printf("buff= %s\n",buff);
+//            j++;
+            system(buff);
+            bzero(buff,100);
+            int ret = excpcmsu();
+            if (ret < 0)
+            {
+                LOGE("excpcmsu failed.\n");
+                return -1;
+            }
+            snprintf(buff,100,"su -c \"chmod 777 /dev/snd/pcmC%dD0c\"",ret);
+            system(buff);
+            return ret;
         }
     }
-    return NULL;
+    return -1;
 }
+
+int excpcmsu(){
+    char path[100];
+    int num = 0;
+    int count;
+    bool flag = false;
+    DIR *dp;
+    struct dirent *eq;
+    for (num = 0; num < 4; ++num) {
+        count = 0;
+//        char *path = "/proc/asound/card";
+        snprintf(path,100,"/proc/asound/card%d",num);
+        LOGI("the target path:%s\n",path);
+
+        dp = opendir(path);
+        eq = NULL;
+        char msg[100];
+        bzero(msg,100);
+        //char *output[2]={".",".."};
+
+
+        for ( int j = 1; (eq = readdir(dp)) !=NULL ;  ++j)
+        {
+            char *p1 = strstr(eq->d_name,".");//用strstr（查找字符串）判断格式是否正确；
+            char *p2 = strstr(eq->d_name,"..");//用strstr（查找字符串）判断格式是否正确；
+            //char *p2 = strstr(eq->d_name,"hello");
+            if(p1 != NULL || p2 != NULL )
+                continue;
+            LOGI("eq->d_name= %s\n",eq->d_name);
+            count++;
+        }
+        if (count >= 5 || count == 0) {
+            LOGI("===count= %d\n",count);
+
+            flag = true;
+            break;
+        }
+    }
+    if (flag == true){
+        LOGI("===the target num:%d\n",num);
+        free(dp);
+        free(eq);
+        return num;
+    }
+    free(dp);
+    free(eq);
+    return -1;
+}
+
+
 
 int inithiddev(){
     char *HidName = FindHidName();
@@ -114,7 +176,7 @@ int readtohid(char *buf,int len) {
     const char buflen = 0x08;
     buf[0] = 0x08;//head
     buf[1] = 0x01;//datalen
-    buf[2] = type;//1：status,  2：angle ，3：volume
+    buf[2] = type;//1：status,  2：volume
     buf[3] = value;
     int ret;
     //LOGI("[write to hid]----> buf[3]=%d \n",value);
@@ -130,7 +192,7 @@ int readtohid(char *buf,int len) {
 }
 
 void setVoid(int vol){
-    writetohid(3,vol);
+    writetohid(2,vol);
     //system("echo \"hello\" > /dev/hidraw1");
 }
 

@@ -8,9 +8,9 @@
 extern "C" {
 #endif
 
-int runAlsa();
-int testSSP();
-void runAudio(JNIEnv *env, jobject obj);
+void runtask(JNIEnv *env, jobject obj);
+//int testSSP();
+//void runAudio(JNIEnv *env, jobject obj);
 
 #ifdef __cplusplus
 }

@@ -6,7 +6,7 @@
 #include "android/log.h"
 
 #include <sys/stat.h>
-#include "ybsHalAlsa.h"
+#include "YbsHalAlsa.h"
 #include "YbsHalHid.h"
 
 static const char *TAG="serial_port";
@@ -23,6 +23,7 @@ static const char *TAG="serial_port";
  * Method:    getVersion
  * Signature: ()Ljava/lang/String;
  */
+extern "C"
 JNIEXPORT jstring JNICALL Java_com_ybs_audiojnilib_AudioModule_getVersion
         (JNIEnv *env, jobject){
     std::string hello = "V1.0.1";
@@ -34,10 +35,11 @@ JNIEXPORT jstring JNICALL Java_com_ybs_audiojnilib_AudioModule_getVersion
  * Method:    run
  * Signature: ()I
  */
+extern "C"
 JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_run
         (JNIEnv *env, jobject obj){
     system("su -c \"chmod 777 /dev/snd/pcmC0D0c\"");
-    runAudio(env,obj);
+//    runAudio(env,obj);
     return 1;
 }
 
@@ -47,6 +49,7 @@ JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_run
  * Method:    SetVol
  * Signature: (I)I
  */
+extern "C"
 JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_setVol
         (JNIEnv *env, jobject obj, jint vol){
     setVoid(vol);
@@ -58,9 +61,19 @@ JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_setVol
  * Method:    SetVol
  * Signature: (I)I
  */
+extern "C"
 JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_getVol
         (JNIEnv *env, jobject obj){
     return getVol();
 }
 
 
+
+extern "C"
+JNIEXPORT jint JNICALL Java_com_ybs_audiojnilib_AudioModule_runuac
+        (JNIEnv *env, jobject obj) {
+//    system("su -c \"chmod 777 /dev/snd/pcmC0D0c\"");
+    runtask(env, obj);
+    return 1;
+
+}

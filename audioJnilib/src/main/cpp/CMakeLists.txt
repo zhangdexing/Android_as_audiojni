@@ -1,4 +1,4 @@
-# For more information about using CMake with Android Studio, read the
+    # For more information about using CMake with Android Studio, read the
 # documentation: https://d.android.com/studio/projects/add-native-code.html
 
 # Sets the minimum version of CMake required to build the native library.
@@ -22,7 +22,7 @@ add_library( # Sets the name of the library.
              YbsAudioModule.cpp
              YbsHalAlsa.c
              YbsHalHid.c
-             YbsFrameQueue.c
+#             YbsFrameQueue.c
         )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -50,10 +50,10 @@ target_link_libraries( # Specifies the target library.
                        audiojni-lib
 
                        tinyalsa
-                       ManyEarsLib
+#                       ManyEarsLib
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
 
-ADD_SUBDIRECTORY(ybs_mutl_ssp-master)
+#ADD_SUBDIRECTORY(ybs_mutl_ssp-master)
 

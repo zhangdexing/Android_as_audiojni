@@ -4,15 +4,187 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前音量:" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/volumetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"  />
+
+        <Button
+            android:id="@+id/Btn_GetVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   设备状态：:" />
+        <TextView
+            android:id="@+id/devicestatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置音量值:" />
+
+
+
+        <TextView
+            android:id="@+id/setvolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <Button
+            android:id="@+id/Btn_UpVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+5"/>
+
+        <Button
+            android:id="@+id/Btn_DownVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-5"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="声源定位角度：" />
+
+
+
+    <TextView
+        android:id="@+id/angletext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+    <Button
+        android:id="@+id/Btn_GetAngle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取"/>
+
+        <Button
+            android:id="@+id/Btn_Clean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清屏"/>
+
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试回放:" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/Btn_playback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回放"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Line"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试音乐:" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="播放"
+                android:id="@+id/Btn_play"
+                android:layout_weight="0.33" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂停"
+                android:id="@+id/Btn_stop"
+                android:layout_weight="0.33" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="停止"
+                android:id="@+id/Btn_end"
+                android:layout_weight="0.33" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/TV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="@id/Line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="状态:" />
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

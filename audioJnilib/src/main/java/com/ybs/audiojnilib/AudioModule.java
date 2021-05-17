@@ -15,10 +15,15 @@ public class AudioModule {
     //回调实体
     private AudioInterface mAudioInterface;
 
-    //唤醒回调
-    private void WackupCallback(int status,int angle){
+    private void ModuleStatusCallback(int code){
         if(this.mAudioInterface != null)
-            mAudioInterface.WackupCallbackFunc(status,angle);
+            mAudioInterface.ModuleStatusCallbackFunc(code);
+    }
+
+    //唤醒回调
+    private void WackupCallback(int status,int angle,int vol){
+        if(this.mAudioInterface != null)
+            mAudioInterface.WackupCallbackFunc(status,angle,vol);
     }
     //Vad回调
     private void VadCallback(int vadstatus){
@@ -72,4 +77,5 @@ public class AudioModule {
     //获取音量 0-100
     public native int getVol();
 
+    public native int runuac();
 }

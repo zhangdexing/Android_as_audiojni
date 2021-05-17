@@ -8,7 +8,7 @@ public interface AudioInterface {
     public void ModuleStatusCallbackFunc(int code);
 
     //唤醒状态回调
-    public void WackupCallbackFunc(int status,int angle);
+    public void WackupCallbackFunc(int status,int angle,int vol);
 
     //VAD结果回调
     public void VadCallbackFunc(int vadstatus);
