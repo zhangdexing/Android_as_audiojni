@@ -1,0 +1,3 @@
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/arm64-v8a/CMakeFiles/audiojni-lib.dir

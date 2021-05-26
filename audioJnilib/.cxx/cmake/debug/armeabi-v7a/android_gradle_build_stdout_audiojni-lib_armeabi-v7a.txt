@@ -1,2 +1,19 @@
 ninja: Entering directory `/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/armeabi-v7a'
-ninja: no work to do.
+[0/1] Re-running CMake...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/armeabi-v7a
+[1/5] Building C object CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c:292:68: warning: passing 'char *' to parameter of type 'const jbyte *' (aka 'const signed char *') converts between pointers to integer types with different sign [-Wpointer-sign]
+                (*env)->SetByteArrayRegion(env,data,0,allpacksize, mqueue->out_buf);
+                                                                   ^~~~~~~~~~~~~~~
+1 warning generated.
+[2/5] Building C object CMakeFiles/audiojni-lib.dir/YbsQueue.c.o
+[3/5] Building C object CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalHid.c:193:13: warning: comparison between pointer and integer ('void *' and 'int') [-Wpointer-integer-compare]
+    if(NULL == checkhiddev()){
+       ~~~~ ^  ~~~~~~~~~~~~~
+1 warning generated.
+[4/5] Building CXX object CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o
+clang++: warning: argument unused during compilation: '-L/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/../jniLibs/armeabi-v7a' [-Wunused-command-line-argument]
+[5/5] Linking CXX shared library /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/debug/obj/armeabi-v7a/libaudiojni-lib.so

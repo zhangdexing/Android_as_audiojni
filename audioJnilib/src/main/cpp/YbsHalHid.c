@@ -24,32 +24,33 @@
 #define LOGE(fmt, args...) __android_log_print(ANDROID_LOG_ERROR, TAG, fmt, ##args)
 
 int fd=0;
+char hidname[20];
 
-char * FindHidName(){
-    char *path = "/dev/";
-    //printf("the target path:%s\n",path);
-    DIR *dp = opendir(path);
-    struct dirent *eq;
-    char *name[15];
-    char buff[20];
-    bzero(buff,20);
-    //char *output[2]={".",".."};
-    int i,j=0;
-    for ( i = 1; (eq = readdir(dp)) !=NULL ;  ++i)
-    {
-        char *p1 = strstr(eq->d_name,"hidraw");//用strstr（查找字符串）判断格式是否正确；
-        //char *p2 = strstr(eq->d_name,"hello");
-        if(p1 != NULL )
-        {
-            name[j]=eq->d_name;
-            //printf("[%d]%s\n",j+1,name[j]);
-            snprintf(buff,20,"/dev/%s",name[j]);
-            j++;
-            return buff;
-        }
-    }
-    return NULL;
-}
+//char * FindHidName(){
+//    char *path = "/dev/";
+//    //printf("the target path:%s\n",path);
+//    DIR *dp = opendir(path);
+//    struct dirent *eq;
+//    char *name[15];
+//    char buff[20];
+//    bzero(buff,20);
+//    //char *output[2]={".",".."};
+//    int i,j=0;
+//    for ( i = 1; (eq = readdir(dp)) !=NULL ;  ++i)
+//    {
+//        char *p1 = strstr(eq->d_name,"hidraw");//用strstr（查找字符串）判断格式是否正确；
+//        //char *p2 = strstr(eq->d_name,"hello");
+//        if(p1 != NULL )
+//        {
+//            name[j]=eq->d_name;
+//            //printf("[%d]%s\n",j+1,name[j]);
+//            snprintf(buff,20,"/dev/%s",name[j]);
+//            j++;
+//            return buff;
+//        }
+//    }
+//    return NULL;
+//}
 
 int checkhiddev(){
     char *path = "/dev/";
@@ -68,92 +69,77 @@ int checkhiddev(){
         if(p1 != NULL )
         {
             name[j]=eq->d_name;
-//            printf("[%d]%s\n",j+1,name[j]);
-            snprintf(buff,100,"su -c \"chmod 777 /dev/%s\"",name[j]);
-            printf("buff= %s\n",buff);
-//            j++;
+            snprintf(hidname,20,"/dev/%s",name[j]);//save hidname
+
+            snprintf(buff,100,"su -c \"chmod 777 /dev/%s\"",name[j]);//chomd 777 hidname
             system(buff);
             bzero(buff,100);
-            int ret = excpcmsu();
-            if (ret < 0)
+
+            system("su -c \"chmod 777 /proc/asound/cards\"");//chomd 777 /proc/asound/cards
+            int cardnum = findcardnumber();//find uac cardnumber
+            if (cardnum < 0)
             {
-                LOGE("excpcmsu failed.\n");
+                LOGE("findcardnumber failed.\n");
                 return -1;
             }
-            snprintf(buff,100,"su -c \"chmod 777 /dev/snd/pcmC%dD0c\"",ret);
+
+            snprintf(buff,100,"su -c \"chmod 777 /dev/snd/pcmC%dD0c\"",cardnum);//chomd 777 /dev/snd/pcm
             system(buff);
-            return ret;
+            return cardnum;
         }
     }
     return -1;
 }
-
-int excpcmsu(){
-    char path[100];
-    int num = 0;
-    int count;
-    bool flag = false;
-    DIR *dp;
-    struct dirent *eq;
-    for (num = 0; num < 4; ++num) {
-        count = 0;
-//        char *path = "/proc/asound/card";
-        snprintf(path,100,"/proc/asound/card%d",num);
-        LOGI("the target path:%s\n",path);
-
-        dp = opendir(path);
-        eq = NULL;
-        char msg[100];
-        bzero(msg,100);
-        //char *output[2]={".",".."};
-
-
-        for ( int j = 1; (eq = readdir(dp)) !=NULL ;  ++j)
-        {
-            char *p1 = strstr(eq->d_name,".");//用strstr（查找字符串）判断格式是否正确；
-            char *p2 = strstr(eq->d_name,"..");//用strstr（查找字符串）判断格式是否正确；
-            //char *p2 = strstr(eq->d_name,"hello");
-            if(p1 != NULL || p2 != NULL )
-                continue;
-            LOGI("eq->d_name= %s\n",eq->d_name);
-            count++;
-        }
-        if (count >= 5 || count == 0) {
-            LOGI("===count= %d\n",count);
-
-            flag = true;
-            break;
-        }
-    }
-    if (flag == true){
-        LOGI("===the target num:%d\n",num);
-        free(dp);
-        free(eq);
-        return num;
-    }
-    free(dp);
-    free(eq);
-    return -1;
-}
-
-
-
-int inithiddev(){
-    char *HidName = FindHidName();
-    //LOGI("jni========HidName=%s\n",HidName);
-    if (HidName == NULL)
-    {
-        LOGI("Can't find Hid Devices \n");
+int findcardnumber(){
+    int fd = open("/proc/asound/cards",O_RDONLY);
+    if (fd < 0){
+        LOGI("open /proc/asound/cards  failed\n");
         return -1;
     }
+    char buff[5000];
+    int i =0;
+    while(1)
+    {
+        read(fd,buff+i,1);
+        if (fd < 0){
+            LOGI("read /proc/asound/cards  failed\n");
+            return -1;
+        }
+        i++;
+        if(strstr(buff,"UacDev") != NULL)
+        {
+            break;
+        }
+        if(i > 5000)
+            break;
+    }
+    int cardnum;
+    char *p = "UacDev";
+    char *tmp;
+    tmp = strstr(buff,p);
+    if(tmp != NULL)
+    {
+        cardnum = atoi(tmp-3);
+        LOGI("cardnum : %d\n",cardnum);
+    }
+    else {
+        LOGI("找不到文本长度\n");
+        return -1;
+    }
+    return cardnum;
 
-    fd = open(HidName, O_RDWR);
+}
+
+
+
+int openhiddev(){
+
+    fd = open(hidname, O_RDWR);
     if(fd < 0){
         LOGI("open error errno = %d \n",errno);
         return  -1;
     }
     LOGI("========open HID suc\n");
-    //return 0;
     return  0;
 }
 
@@ -209,7 +195,7 @@ int runYbsHid(){
         return -1;
     }
     LOGD("checkHid dev success\n");
-    inithiddev();
+    openhiddev();
     char readbuf[8];
     for(;;){
         if(0 == readtohid(readbuf,sizeof(readbuf))){

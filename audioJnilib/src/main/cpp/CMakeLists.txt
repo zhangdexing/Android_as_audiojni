@@ -19,6 +19,8 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
+#             YbsFrameQueue.c
+             YbsQueue.c
              YbsAudioModule.cpp
              YbsHalAlsa.c
              YbsHalHid.c

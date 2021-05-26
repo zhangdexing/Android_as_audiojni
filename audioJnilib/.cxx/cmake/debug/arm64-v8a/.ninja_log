@@ -1,0 +1,7 @@
+# ninja log v5
+0	53	1621396333	CMakeFiles/audiojni-lib.dir/YbsQueue.c.o	930784730d3a1506
+31	143	1621396333	CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o	c12a5fb4663695c0
+24	164	1621396333	CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o	f74ceb12dc3b4289
+15	395	1621396333	CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o	b7fcdec0d5eb52c
+0	2	0	clean	c97b712d27b408da
+0	3	0	clean	c97b712d27b408da

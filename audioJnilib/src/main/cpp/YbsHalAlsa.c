@@ -20,14 +20,8 @@
 #include <stdbool.h>
 #include "YbsHalAlsa.h"
 #include "YbsHalHid.h"
-//#include "YbsFrameQueue.h"
-
-//#include "ybs_mutl_ssp-master/dsplib/ybs_mutl_ssp.h"
-//#include "ybs_mutl_ssp-master/dsplib/overallContext.h"
-
-int vadflag = 0;
-
-
+#include "YbsFrameQueue.h"
+#include "YbsQueue.h"
 
 static const char *LOG_TAG="ALSA";
 
@@ -53,11 +47,15 @@ const  uint8_t  WAKE_UP = 1;
 const  uint8_t VAD_STATE_START = 2;
 const  uint8_t VAD_STATE_END = 3;
 const  uint8_t VAD_STATE_TIMEOUT = 4;
-
 char buff[8];
 bool flag = false;
 uint8_t mstatus;
+uint8_t cstatus;
 uint carnum;
+struct seq_queue  *mqueue;
+pthread_mutex_t  *mmutex;
+uint8_t mvol;
+uint8_t mangle;
 
 struct wav_header {
     uint32_t riff_id;
@@ -124,18 +122,28 @@ unsigned int capture_sample(FILE *file, unsigned int card, unsigned int device,
 
 
     while ( !pcm_read(pcm, buffer, size) ) {
-//        LOGD("=============== size=%d\n",size);
         if (fwrite(buffer, 1, size, file) != size) {
             fprintf(stderr,"Error capturing sample\n");
             break;
         }
+
+
+        if(in_queue(mqueue,mmutex,buffer)	< 0)
+        {
+            printf("the mqueue is full.\n");
+        }
+
         bytes_read += size;
-        if (mstatus == VAD_STATE_END || mstatus == VAD_STATE_TIMEOUT){//将vadend或vadtimeout后的frame捕获
+        if (cstatus == VAD_STATE_END || cstatus == VAD_STATE_TIMEOUT){//将vadend或vadtimeout后的frame捕获
             for (int i = 0; i < 5 ; ++i) {
                 pcm_read(pcm, buffer, size);
                 if (fwrite(buffer, 1, size, file) != size) {
                     fprintf(stderr,"Error capturing sample\n");
                     break;
+                }
+                if(in_queue(mqueue,mmutex,buffer)	< 0)
+                {
+                    printf("the mqueue is full.\n");
                 }
             }
             break;
@@ -182,7 +190,7 @@ int UacCaptureRecording() {
 
     while (1) {
 
-        if (mstatus == WAKE_UP || mstatus == VAD_STATE_START) {//begin to captrue
+        if (cstatus == WAKE_UP || cstatus == VAD_STATE_START) {//begin to captrue
             file = fopen("/data/test.wav", "wb");
             if (!file) {
                 LOGE("Unable to create file '/data/test.wav'");
@@ -209,6 +217,33 @@ int UacCaptureRecording() {
     LOGE("===============Captured %d frames\n", frames);
 
 }
+
+
+void *ReadHiding(void *arg) {
+    int ret;
+    while (1) {
+        while (flag == true) {
+            bzero(buff, 8);
+            ret = readtohid(buff, 8);
+            if (ret < 0) {
+                LOGE(LOG_TAG, " read hid dev error;");
+                flag = false;
+                break;
+            }
+            if (buff[2] == READ_STATUS)//read vadstatus
+            {
+                mstatus = buff[3];
+                cstatus = buff[3];
+                mvol = buff[4];
+                mangle = buff[5];
+                LOGI("=================mstatus=%d\n",mstatus);
+            }
+        }
+        usleep(100);
+    }
+
+}
+
 void *StartUacRecording(void *arg)
 {
     LOGD("==========UacCaptureRecording");
@@ -225,30 +260,40 @@ void *StartUacRecording(void *arg)
 void handleAudioSSP(JNIEnv *env, jobject obj) {
 
     carnum = checkhiddev();
-    (*env)->CallVoidMethod(env, obj, ModuleStatusCallback,5);//ok
+    (*env)->CallVoidMethod(env, obj, ModuleStatusCallback,5);// no ok
     if(carnum != -1)//find a hid  device!
     {
-        if (inithiddev() < 0) {//open hid dev
+        if (openhiddev() < 0) {//open hid dev
             LOGE(LOG_TAG, " open hid dev error;");
             flag = false;
-        } else
+        } else {
             flag = true;
+            (*env)->CallVoidMethod(env, obj, ModuleStatusCallback,6);//ok
+        }
 
-        (*env)->CallVoidMethod(env, obj, ModuleStatusCallback,6);//ok
         while (flag == true) {
-            bzero(buff, 8);
-            if (readtohid(buff, 8) < 0) {
-                LOGE(LOG_TAG, " read hid dev error;");
-                break;
+            if (mstatus > 0) {
+                if (mstatus == WAKE_UP) {
+                    (*env)->CallVoidMethod(env, obj, WackupCallback, WAKE_UP, mvol, mangle);
+                    mstatus = -1;
+                } else if (mstatus == VAD_STATE_START || mstatus == VAD_STATE_TIMEOUT || mstatus == VAD_STATE_END){
+                    (*env)->CallVoidMethod(env, obj, VadCallback, mstatus);
+                    mstatus = -1;
+                }
             }
-            if (buff[2] == READ_STATUS)//read vadstatus
+            if(is_queue_empty(mqueue) == true)
             {
-                mstatus = buff[3];
-                if (buff[3] == WAKE_UP) {
-                    (*env)->CallVoidMethod(env, obj, WackupCallback, WAKE_UP, buff[4], buff[5]);
-                } else
-                    (*env)->CallVoidMethod(env, obj, VadCallback, buff[3]);
+                usleep(20);
+                continue;
+            } else{
+                out_queue(mqueue,mmutex);
+                int allpacksize = mqueue->datalen;
+                jbyteArray data =(*env)->NewByteArray(env,allpacksize);
+                (*env)->SetByteArrayRegion(env,data,0,allpacksize, mqueue->out_buf);
+                (*env)->CallVoidMethod(env,obj, AudioCallback, data,allpacksize);
+                (*env)->DeleteLocalRef(env, data);
             }
+
         }
     }
 
@@ -290,10 +335,22 @@ void runtask(JNIEnv *env, jobject obj){
             return;
         }
         LOGD("find ModuleStatusCallback");
+        mqueue =  malloc(sizeof(struct seq_queue ));
+        mmutex =  malloc(sizeof(pthread_mutex_t));
+        int pcmbufflen = 8192;
+        init_queue(mqueue,mmutex,pcmbufflen);//初始化队列
+
+
+
 
         pthread_t tid;
         pthread_create(&tid, NULL, StartUacRecording, NULL);//捕获Android端PCM数据
-        LOGD("enter pthread~~");
+        LOGD("enter StartUacRecording pthread~~");
+
+        pthread_t hid;
+        pthread_create(&hid, NULL, ReadHiding, NULL);//捕获Android端PCM数据
+        LOGD("enter ReadHiding pthread~~");
+
         for(;;){
             handleAudioSSP(env,obj);//always to find hid dev
             sleep(3);

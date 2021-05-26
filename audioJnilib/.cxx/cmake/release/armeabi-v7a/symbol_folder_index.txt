@@ -1,0 +1,1 @@
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/release/obj/armeabi-v7a

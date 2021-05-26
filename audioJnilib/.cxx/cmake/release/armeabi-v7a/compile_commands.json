@@ -1,0 +1,25 @@
+[
+{
+  "directory": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/release/armeabi-v7a",
+  "command": "/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi16 --gcc-toolchain=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Daudiojni_lib_EXPORTS -I/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/./include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC   -o CMakeFiles/audiojni-lib.dir/YbsQueue.c.o   -c /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsQueue.c",
+  "file": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsQueue.c"
+},
+
+{
+  "directory": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/release/armeabi-v7a",
+  "command": "/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi16 --gcc-toolchain=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Daudiojni_lib_EXPORTS -I/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/./include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -L/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/../jniLibs/armeabi-v7a -Oz -DNDEBUG  -fPIC   -o CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o -c /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsAudioModule.cpp",
+  "file": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsAudioModule.cpp"
+},
+
+{
+  "directory": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/release/armeabi-v7a",
+  "command": "/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi16 --gcc-toolchain=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Daudiojni_lib_EXPORTS -I/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/./include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC   -o CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o   -c /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c",
+  "file": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c"
+},
+
+{
+  "directory": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/release/armeabi-v7a",
+  "command": "/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --target=armv7-none-linux-androideabi16 --gcc-toolchain=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Daudiojni_lib_EXPORTS -I/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/./include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -Oz -DNDEBUG  -fPIC   -o CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o   -c /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalHid.c",
+  "file": "/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalHid.c"
+}
+]

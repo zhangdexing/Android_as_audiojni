@@ -1,0 +1,31 @@
+ninja: Entering directory `/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/arm64-v8a'
+[1/5] Building C object CMakeFiles/audiojni-lib.dir/YbsQueue.c.o
+[2/5] Building C object CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalHid.c:48:20: warning: address of stack memory associated with local variable 'buff' returned [-Wreturn-stack-address]
+            return buff;
+                   ^~~~
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalHid.c:207:13: warning: comparison between pointer and integer ('void *' and 'int') [-Wpointer-integer-compare]
+    if(NULL == checkhiddev()){
+       ~~~~ ^  ~~~~~~~~~~~~~
+2 warnings generated.
+[3/5] Building C object CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c:232:22: warning: equality comparison result unused [-Wunused-comparison]
+                flag == false;
+                ~~~~~^~~~~~~~
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c:232:22: note: use '=' to turn this equality comparison into an assignment
+                flag == false;
+                     ^~
+                     =
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/YbsHalAlsa.c:294:68: warning: passing 'char *' to parameter of type 'const jbyte *' (aka 'const signed char *') converts between pointers to integer types with different sign [-Wpointer-sign]
+                (*env)->SetByteArrayRegion(env,data,0,allpacksize, mqueue->out_buf);
+                                                                   ^~~~~~~~~~~~~~~
+2 warnings generated.
+[4/5] Building CXX object CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o
+clang++: warning: argument unused during compilation: '-L/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/../jniLibs/armeabi-v7a' [-Wunused-command-line-argument]
+[5/5] Linking CXX shared library /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/debug/obj/arm64-v8a/libaudiojni-lib.so
+FAILED: /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/debug/obj/arm64-v8a/libaudiojni-lib.so 
+: && /home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --gcc-toolchain=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot -fPIC -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -L/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/../jniLibs/armeabi-v7a -O0 -fno-limit-debug-info  -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments -shared -Wl,-soname,libaudiojni-lib.so -o /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/debug/obj/arm64-v8a/libaudiojni-lib.so CMakeFiles/audiojni-lib.dir/YbsQueue.c.o CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o  -ltinyalsa /home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/liblog.so -latomic -lm && :
+/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x/../../../../aarch64-linux-android/bin/ld: skipping incompatible /home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/src/main/cpp/../jniLibs/armeabi-v7a/libtinyalsa.so when searching for -ltinyalsa
+/home/dexing/work/AS/SDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x/../../../../aarch64-linux-android/bin/ld: cannot find -ltinyalsa
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.

@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.ybs.myapplication"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -36,8 +36,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':audioJnilib')
+    implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation project(path: ':audioJnilib')//包含本地audioJnilib模块  模块内含java和c/c++ 取消依赖需打包jar和so并在主工程上依赖jar so库
+    compile files('libs/Msc.jar')//依赖本地jar包  //so请放在main/jniLibs 下面自动链接库
+
 }

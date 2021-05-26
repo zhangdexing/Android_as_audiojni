@@ -1,0 +1,7 @@
+# ninja log v5
+0	147	1621407326	CMakeFiles/audiojni-lib.dir/YbsQueue.c.o	85092b800c7d3266
+1	148	1621407326	CMakeFiles/audiojni-lib.dir/YbsHalHid.c.o	e1aae0b50a5ff6c7
+1	160	1621407326	CMakeFiles/audiojni-lib.dir/YbsHalAlsa.c.o	a991cb2f89a9a705
+1	428	1621407326	CMakeFiles/audiojni-lib.dir/YbsAudioModule.cpp.o	e6bb4e89d2c1e11b
+428	449	1621407326	/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/build/intermediates/cmake/release/obj/armeabi-v7a/libaudiojni-lib.so	591da0692ee16e12
+0	4	0	clean	c97b712d27b408da

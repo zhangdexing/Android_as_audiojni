@@ -1,0 +1,7 @@
+Executable : /home/dexing/work/AS/SDK/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/home/dexing/AndroidStudioProjects/ybsaudiojni/ybsusbaudiocard/audioJnilib/.cxx/cmake/debug/arm64-v8a
+audiojni-lib
+jvmArgs : 
+
